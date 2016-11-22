@@ -11,47 +11,47 @@ import java.util.List;
 
 @Service("userService")
 @Transactional
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserDao dao;
+    @Autowired
+    private UserDao dao;
 
-	public User findById(int id) {
-		return dao.findById(id);
-	}
+    public User findById(int id) {
+        return dao.findById(id);
+    }
 
-	public User findBySSO(String sso) {
-		User user = dao.findBySSO(sso);
-		return user;
-	}
+    public User findBySSO(String sso) {
+        User user = dao.findBySSO(sso);
+        return user;
+    }
 
-	public void saveUser(User user) {
-		dao.save(user);
-	}
+    public void saveUser(User user) {
+        dao.save(user);
+    }
 
-	public void updateUser(User user) {
-		User entity = dao.findById(user.getId());
-		if(entity!=null){
-			entity.setSsoId(user.getSsoId());
-			entity.setFirstName(user.getFirstName());
-			entity.setLastName(user.getLastName());
-			entity.setEmail(user.getEmail());
-			entity.setUserDocuments(user.getUserDocuments());
-		}
-	}
+    public void updateUser(User user) {
+        User entity = dao.findById(user.getId());
+        if (entity != null) {
+            entity.setSsoId(user.getSsoId());
+            entity.setFirstName(user.getFirstName());
+            entity.setLastName(user.getLastName());
+            entity.setEmail(user.getEmail());
+            entity.setUserDocuments(user.getUserDocuments());
+        }
+    }
 
-	
-	public void deleteUserBySSO(String sso) {
-		dao.deleteBySSO(sso);
-	}
 
-	public List<User> findAllUsers() {
-		return dao.findAllUsers();
-	}
+    public void deleteUserBySSO(String sso) {
+        dao.deleteBySSO(sso);
+    }
 
-	public boolean isUserSSOUnique(Integer id, String sso) {
-		User user = findBySSO(sso);
-		return ( user == null || ((id != null) && (user.getId() == id)));
-	}
-	
+    public List<User> findAllUsers() {
+        return dao.findAllUsers();
+    }
+
+    public boolean isUserSSOUnique(Integer id, String sso) {
+        User user = findBySSO(sso);
+        return (user == null || ((id != null) && (user.getId() == id)));
+    }
+
 }
