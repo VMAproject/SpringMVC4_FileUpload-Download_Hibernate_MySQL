@@ -56,9 +56,7 @@ public class AppController {
         return "userslist";
     }
 
-    /**
-     * This method will provide the medium to add a new user.
-     */
+
     @RequestMapping(value = {"/newuser"}, method = RequestMethod.GET)
     public String newUser(ModelMap model) {
         User user = new User();
@@ -67,26 +65,13 @@ public class AppController {
         return "registration";
     }
 
-    /**
-     * This method will be called on form submission, handling POST request for
-     * saving user in database. It also validates the user input
-     */
+
     @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
     public String saveUser(@Valid User user, BindingResult result,
                            ModelMap model) {
 
-        if (result.hasErrors()) {
-            return "registration";
-        }
+        if (result.hasErrors()) return "registration";
 
-		/*
-         * Preferred way to achieve uniqueness of field [sso] should be implementing custom @Unique annotation
-		 * and applying it on field [sso] of Model class [User].
-		 * 
-		 * Below mentioned peace of code [if block] is to demonstrate that you can fill custom errors outside the validation
-		 * framework as well while still using internationalized messages.
-		 * 
-		 */
         if (!userService.isUserSSOUnique(user.getId(), user.getSsoId())) {
             FieldError ssoError = new FieldError("user", "ssoId", messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
             result.addError(ssoError);
@@ -102,9 +87,6 @@ public class AppController {
     }
 
 
-    /**
-     * This method will provide the medium to update an existing user.
-     */
     @RequestMapping(value = {"/edit-user-{ssoId}"}, method = RequestMethod.GET)
     public String editUser(@PathVariable String ssoId, ModelMap model) {
         User user = userService.findBySSO(ssoId);
@@ -113,10 +95,7 @@ public class AppController {
         return "registration";
     }
 
-    /**
-     * This method will be called on form submission, handling POST request for
-     * updating user in database. It also validates the user input
-     */
+
     @RequestMapping(value = {"/edit-user-{ssoId}"}, method = RequestMethod.POST)
     public String updateUser(@Valid User user, BindingResult result,
                              ModelMap model, @PathVariable String ssoId) {
@@ -132,9 +111,6 @@ public class AppController {
     }
 
 
-    /**
-     * This method will delete an user by it's SSOID value.
-     */
     @RequestMapping(value = {"/delete-user-{ssoId}"}, method = RequestMethod.GET)
     public String deleteUser(@PathVariable String ssoId) {
         userService.deleteUserBySSO(ssoId);
