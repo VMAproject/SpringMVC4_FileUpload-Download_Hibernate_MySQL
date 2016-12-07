@@ -100,9 +100,7 @@ public class AppController {
     public String updateUser(@Valid User user, BindingResult result,
                              ModelMap model, @PathVariable String ssoId) {
 
-        if (result.hasErrors()) {
-            return "registration";
-        }
+        if (result.hasErrors()) return "registration";
 
         userService.updateUser(user);
 
